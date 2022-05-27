@@ -47,5 +47,5 @@ app.*.map.json
 /android/app/release
 
 # Api, DataSource realted
-/lib/data/
-/lib/domain/
+lib/data/
+lib/domain/
