@@ -49,3 +49,4 @@ app.*.map.json
 # Api, DataSource realted
 **/lib/data/
 **/lib/domain/
+*.dart
