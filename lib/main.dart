@@ -1,12 +1,42 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:retrofitpractice/app/di/app_binding.dart';
+import 'package:retrofitpractice/app/routes/app_pages.dart';
+import 'package:retrofitpractice/domain/usecase/article/get_article_use_case.dart';
 import 'package:retrofitpractice/ui/screens/home/home_screen.dart';
+import 'package:retrofitpractice/ui/screens/home/home_view_model.dart';
+import 'package:retrofitpractice/ui/screens/tempScreen.dart';
+
+import 'app/config/equatable_config.dart';
+import 'app/config/http_config.dart';
+import 'app/config/loading_config.dart';
+import 'app/config/size_config.dart';
+import 'data/remote/network/source/article/article_remote_data_source.dart';
+import 'data/remote/network/source/article/article_remote_data_source_impl.dart';
+import 'data/repository/article/article_repository.dart';
+import 'data/repository/article/article_repository_impl.dart';
 
 /* Dart Pad */
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // debug 빌드에서만 http certification 설정
+  if (kDebugMode) {
+    HttpOverrides.global = AppHttpOverrides();
+  }
+
+  // 앱 설정 init
+  AppLoadingConfig.init();
+  AppEquatableConfig.init();
   runApp(const MyApp());
+
+  await initDependencies();
 }
 
 class MyApp extends StatelessWidget {
@@ -20,7 +50,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomeScreen(),
+      enableLog: true,
+      // initialRoute: Routes.home,
+      getPages: AppPages.routes,
+      initialBinding: AppBinding(),
+      builder: (context, child) {
+        SizeConfig().init(context);
+        return EasyLoading.init()(context, child);
+      },
     );
   }
+}
+
+Future<void> initDependencies() async {
+  // Get.put<HomeViewModel>(HomeViewModel(Get.find()));
 }

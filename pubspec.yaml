@@ -39,6 +39,9 @@ dependencies:
   json_annotation: ^4.5.0
   dio: ^4.0.6
   get: ^4.6.5
+  connectivity_plus: ^2.3.0
+  flutter_easyloading: ^3.0.5
+  equatable: ^2.0.3
 
 dev_dependencies:
   flutter_test:
@@ -65,9 +68,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/article_json.json
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

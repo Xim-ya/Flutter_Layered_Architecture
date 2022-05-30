@@ -1,4 +1,8 @@
 /* 엔드포인트 메소드 자동화 ==> Retrofit  */
+import 'dart:convert';
+
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -9,14 +13,17 @@ part 'article_api.g.dart';
 
 // https://newsapi.org/v2/top-headlines?country=kr&apiKey=c4237fc3e9d74fcbb84d1b7a725efc41
 
+// Test
+// https://jsonplaceholder.typicode.com/
 // '@' <-- Annotation
-@RestApi(baseUrl: "https://newsapi.org/v2/")
+@RestApi(baseUrl: "https://jsonplaceholder.typicode.com/")
 abstract class ArticleApi {
   factory ArticleApi(Dio dio, {String baseUrl}) = _ArticleApi;
 
   /* Path Mapping at Dio */
-  @GET("top-headlines?country=kr&apiKey=c4237fc3e9d74fcbb84d1b7a725efc41")
-  Future<NewsResponse> getArticle();
+  // @GET("top-headlines?country=kr&apiKey=c4237fc3e9d74fcbb84d1b7a725efc41")
+  @GET("todos/1")
+  Future<ArticleResponse> getArticle();
 }
 
 // @JsonSerializable()
