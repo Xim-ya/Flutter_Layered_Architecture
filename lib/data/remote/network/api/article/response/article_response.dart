@@ -24,81 +24,29 @@ part 'article_response.g.dart';
 
 @JsonSerializable(createToJson: false)
 class ArticleResponse {
-  @JsonKey(name: 'userId')
-  @IntConverter()
-  final int? userId;
-
-  @JsonKey(name: 'id')
-  @IntConverter()
-  final int? id;
-
-  @JsonKey(name: 'title')
+  @JsonKey(name: 'status')
   @StringConverter()
-  final String? title;
+  final String? status;
 
-  @JsonKey(name: 'completed')
-  final bool completed;
+  @JsonKey(name: 'totalResults')
+  @IntConverter()
+  final int? totalResults;
 
-  const ArticleResponse(
-      {this.userId, this.id, this.title, required this.completed});
-  // @JsonKey(name: 'articles')
-  // final List<ArticleResponse>? articles;
+  @JsonKey(name: 'articles')
+  final List<ArticleCoreResponse> articles;
+
+  const ArticleResponse({
+    required this.status,
+    required this.totalResults,
+    required this.articles,
+  });
 
   factory ArticleResponse.fromJson(Map<String, dynamic> json) =>
       _$ArticleResponseFromJson(json);
-  // Map<String, dynamic> toJson() => _$NewsResponseToJson(this);
 }
 
-// @JsonSerializable(createToJson: false)
-// class ArticleResponse {
-//   @JsonKey(name: 'author')
-//   @StringConverter()
-//   final String? author;
-//
-//   @JsonKey(name: 'title')
-//   @StringConverter()
-//   final String? title;
-//
-//   @JsonKey(name: 'description')
-//   @StringConverter()
-//   final String? description;
-//
-//   @JsonKey(name: 'url')
-//   @StringConverter()
-//   final String? url;
-//
-//   @JsonKey(name: "urlToImage")
-//   @StringConverter()
-//   final String? imageUrl; // keyName 변경
-//
-//   @JsonKey(name: "publishedAt")
-//   @StringConverter()
-//   final String? date; // keyName 변경
-//
-//   @JsonKey(name: "content")
-//   @StringConverter()
-//   final String? content;
-//
-//   const ArticleResponse(
-//       {required this.author,
-//       required this.title,
-//       required this.description,
-//       required this.url,
-//       required this.imageUrl,
-//       required this.date,
-//       required this.content});
-//
-//   /// factory (클래스이름).fromJson(Map<String, dynamic> json) => _$(클래스이름)FromJson(json);
-//   factory ArticleResponse.fromJson(Map<String, dynamic> json) =>
-//       _$ArticleResponseFromJson(json);
-//   // Map<String, dynamic> toJson() => _$ArticleResponseToJson(this);
-// }
-
 /*
-* {
-  "status": "ok",
-  "totalResults": 34,
-  "articles": [
+"articles": [
     {
       "source": {
         "id": null,
@@ -119,30 +67,47 @@ class ArticleResponse {
       },
       "author": null,
       "title": "콜 오브 듀티 워존 및
-*
 * */
 
-/* Back UPSSSSS*/
-// @JsonSerializable(createToJson: false)
-// class ArticleResponse {
-//   @JsonKey(name: 'status')
-//   // @StringConverter()
-//   final String? status;
-//
-//   @JsonKey(name: 'totalResults')
-//   // @IntConverter()
-//   final int? totalResults;
-//
-//   // @JsonKey(name: 'articles')
-//   // final List<ArticleResponse>? articles;
-//
-//   const ArticleResponse({
-//     required this.status,
-//     required this.totalResults,
-//     // required this.articles
-//   });
-//
-//   factory ArticleResponse.fromJson(Map<String, dynamic> json) =>
-//       _$ArticleResponseFromJson(json);
-// // Map<String, dynamic> toJson() => _$NewsResponseToJson(this);
-// }
+@JsonSerializable(createToJson: false)
+class ArticleCoreResponse {
+  @JsonKey(name: 'author')
+  @StringConverter()
+  final String? author;
+
+  @JsonKey(name: 'title')
+  @StringConverter()
+  final String? title;
+
+  @JsonKey(name: 'description')
+  @StringConverter()
+  final String? description;
+
+  @JsonKey(name: 'url')
+  @StringConverter()
+  final String? url;
+
+  @JsonKey(name: "urlToImage")
+  @StringConverter()
+  final String? imageUrl; // keyName 변경
+
+  @JsonKey(name: "publishedAt")
+  @StringConverter()
+  final String? date; // keyName 변경
+
+  @JsonKey(name: "content")
+  @StringConverter()
+  final String? content;
+
+  const ArticleCoreResponse(
+      {required this.author,
+      required this.title,
+      required this.description,
+      required this.url,
+      required this.imageUrl,
+      required this.date,
+      required this.content});
+
+  factory ArticleCoreResponse.fromJson(Map<String, dynamic> json) =>
+      _$ArticleCoreResponseFromJson(json);
+}

@@ -45,59 +45,73 @@ import 'package:retrofitpractice/data/remote/network/api/article/response/articl
 //       );
 // }
 
-class ArticleModel {
-  final int? userId;
-  final int? id;
-  final String? title;
-  final bool completed;
-
-  ArticleModel({this.userId, this.id, this.title, required this.completed});
-
-  factory ArticleModel.fromResponse(ArticleResponse response) => ArticleModel(
-      userId: response.userId,
-      id: response.id,
-      title: response.title,
-      completed: response.completed);
-}
+// class ArticleModel {
+//   final int? userId;
+//   final int? id;
+//   final String? title;
+//   final bool completed;
+//
+//   ArticleModel({this.userId, this.id, this.title, required this.completed});
+//
+//   factory ArticleModel.fromResponse(ArticleResponse response) => ArticleModel(
+//       userId: response.userId,
+//       id: response.id,
+//       title: response.title,
+//       completed: response.completed);
+// }
 
 /* Backups*/
-// class ArticleModel {
-//   final String? status;
-//   final int? totalResults;
-//
-//   const ArticleModel({this.status, this.totalResults});
-//
-//   factory ArticleModel.fromResponse(ArticleResponse response) => ArticleModel(
-//     status: response.status,
-//     totalResults: response.totalResults,
-//   );
-// }
+class ArticleModel {
+  final String? status;
+  final int? totalResults;
+  final List<ArticleCoreModel> articles;
 
-// class ArticleModel {
-//   final String? author;
-//   final String? title;
-//   final String? description;
-//   final String? url;
-//   final String? urlToImage;
-//   final String? publishedAt;
-//   /* NOTE : Don't use Content Here */
-//   // final String? content;
-//
-//   const ArticleModel({
-//     this.author,
-//     this.title,
-//     this.description,
-//     this.url,
-//     this.urlToImage,
-//     this.publishedAt,
-//   });
-//
-//   factory ArticleModel.fromResponse(ArticleResponse response) => ArticleModel(
-//         author: response.author,
-//         title: response.title,
-//         description: response.description,
-//         url: response.url,
-//         urlToImage: response.imageUrl,
-//         publishedAt: response.date,
-//       );
-// }
+  const ArticleModel({this.status, this.totalResults, required this.articles});
+
+  factory ArticleModel.fromResponse(ArticleResponse response) {
+    List<ArticleCoreModel> result = (response.articles)
+        .map((e) => ArticleCoreModel.fromResponse(e))
+        .toList();
+    return ArticleModel(
+      status: response.status,
+      totalResults: response.totalResults,
+      articles: result,
+    );
+  }
+  //
+  // factory ArticleModel.fromResponse(ArticleResponse response) => ArticleModel(
+  //       status: response.status,
+  //       totalResults: response.totalResults,
+  //       articles: response.articles,
+  //     );
+}
+
+class ArticleCoreModel {
+  final String? author;
+  final String? title;
+  final String? description;
+  final String? url;
+  final String? urlToImage;
+  final String? publishedAt;
+  /* NOTE : Don't use Content Here */
+  // final String? content;
+
+  const ArticleCoreModel({
+    this.author,
+    this.title,
+    this.description,
+    this.url,
+    this.urlToImage,
+    this.publishedAt,
+  });
+
+  factory ArticleCoreModel.fromResponse(ArticleCoreResponse response) =>
+      ArticleCoreModel(
+        author: response.author,
+        title: response.title,
+        description: response.description,
+        url: response.url,
+        urlToImage: response.imageUrl,
+        publishedAt: response.date,
+      );
+}
