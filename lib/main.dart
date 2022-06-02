@@ -9,6 +9,7 @@ import 'app/config/equatable_config.dart';
 import 'app/config/http_config.dart';
 import 'app/config/loading_config.dart';
 import 'app/config/size_config.dart';
+import 'data/local/persistence/hive/app_data_base.dart';
 
 /* Dart Pad */
 void main() async {
@@ -23,6 +24,8 @@ void main() async {
   AppLoadingConfig.init();
   AppEquatableConfig.init();
   runApp(const MyApp());
+
+  initDependencies();
 }
 
 class MyApp extends StatelessWidget {
@@ -47,4 +50,15 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+/// main() 함수에서 사용할, 미리 주입하는 dependencies 모음
+Future<void> initDependencies() async {
+  // Splash에서 쓸 인스턴스들만 미리 따로 빼서 등록함.
+  await Get.putAsync(AppDatabase.init, permanent: true);
+
+  await Get.putAsync(
+    () => Get.find<AppDatabase>().articleBox,
+    permanent: true,
+  );
 }
