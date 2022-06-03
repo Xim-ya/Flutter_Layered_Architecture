@@ -1,9 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:retrofitpractice/app/routes/app_pages.dart';
 import 'package:retrofitpractice/data/local/persistence/dao/article/document/article_document.dart';
-import 'package:retrofitpractice/domain/enums/acrticle_status.dart';
 import 'package:retrofitpractice/domain/models/article/article_model.dart';
 import 'package:retrofitpractice/domain/usecase/article/delete_local_article_use_case.dart';
 import 'package:retrofitpractice/domain/usecase/article/get_article_use_case.dart';
@@ -14,15 +12,18 @@ import '../../../domain/usecase/article/delete_all_local_article_use_case.dart';
 import '../../common/componets/common_widget.dart';
 
 class HomeViewModel extends BaseViewModel {
-  String _selectedNation = "kr";
-  int? selectedIndex;
+  /* State Variables */
+  String _selectedNation = "kr"; // 기본 국가 설정 값
+  int? selectedIndex; // 선택된 기사의 인덱스 값, 인덱스 값으로 기사의 상세 페이지를 보여줌
 
+  /* `UseCase` 연동 */
   final GetArticleUseCase _useCase;
   final LoadLocalArticleUseCase _loadLocalArticleUseCase;
   final AddLocalArticleUseCase _addLocalArticleUseCase;
   final DeleteAllLocalArticleUseCase _deleteAllLocalArticleUseCase;
   final DeleteLocalArticleUseCase _deleteLocalArticleUseCase;
 
+  /* 인스턴스 초기화 */
   Rxn<ArticleModel> _data = Rxn();
   Box<ArticleDocument>? _localData;
 
@@ -33,22 +34,28 @@ class HomeViewModel extends BaseViewModel {
       this._deleteAllLocalArticleUseCase,
       this._deleteLocalArticleUseCase);
 
-  /* Local Database 로직 */
+  /*** Local Database 관련 로직  로직 ***/
+  /// 로컬에 저장된 모든 기사 지우기
   void deleteAllLocalArticle() {
     _deleteAllLocalArticleUseCase.call();
+    Get.back();
   }
 
+  /// 로컬에 저장된 특정 기사 지우기
   void deleteLocalArticle(int index) {
     _deleteLocalArticleUseCase.call(index);
     update();
   }
 
+  /// 로컬에 저장된 기사 불러오기
   void fetchLocalArticles() {
     final responseResult = _loadLocalArticleUseCase.call();
     _localData = responseResult;
   }
 
+  /// 로컬에 즐겨찾기 기사 추가하기
   void addArticleToLocalDataBase(ArticleCoreModel request) {
+    // 기존에 추가한 기사가 있다면 로컬에 추가하지 않음.
     final aim = _localData?.values
         .where((e) => e.id == "${request.url}${request.publishedAt}");
     if (aim!.isNotEmpty) {
@@ -57,7 +64,8 @@ class HomeViewModel extends BaseViewModel {
     _addLocalArticleUseCase.call(request);
   }
 
-  // 선택된 Query을 기준으로 Network 호출
+  /*** 네트워킹 로직 ***/
+  /// 선택된 Query을 기준으로 Network 호출
   void fetchArticles() async {
     final responseResult = await _useCase.call(_selectedNation);
     responseResult.fold(onSuccess: (data) {
@@ -68,6 +76,7 @@ class HomeViewModel extends BaseViewModel {
     });
   }
 
+  /// 기사 국가 설정을 변경하여 데이터 호출
   void fetchNewsOnNation(String nation) async {
     if (nation == _selectedNation) {
       return CommonWidget.toast("이미 선택된 국가 입니다");
@@ -76,8 +85,11 @@ class HomeViewModel extends BaseViewModel {
     fetchArticles();
   }
 
+  /*** 라우팅 로직 ***/
+  /// 즐겨찾기 스크린으로 이동
   void routeToFavorite() => navigation.open(Routes.articleFavorite);
 
+  /// 기사 상세페이지로 이동
   void routeToDetail(int selectedIndex) {
     this.selectedIndex = selectedIndex;
     navigation.open(Routes.articleDetail);
@@ -86,10 +98,11 @@ class HomeViewModel extends BaseViewModel {
   @override
   void onInit() async {
     super.onInit();
-    fetchArticles();
-    fetchLocalArticles();
+    fetchArticles(); // 서버에서 기사 리스트 호출
+    fetchLocalArticles(); // 로컬에서 기사 리스트 호출
   }
 
+  /*** 데이터 불러오는 Getter 값 ***/
   ArticleCoreModel? get selectedArticle =>
       _data.value!.articles[selectedIndex!];
   Box<ArticleDocument>? get localData => _localData;

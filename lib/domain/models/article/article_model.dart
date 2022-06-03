@@ -28,39 +28,6 @@
 
 import 'package:retrofitpractice/data/remote/network/api/article/response/article_response.dart';
 
-// class ArticleModel {
-//   final String? status;
-//   final int? totalResults;
-//   // final List<ArticleResponse>? articles;
-//
-//   const ArticleModel({this.status, this.totalResults});
-//
-//   /* NOTE : Don't use Content Here */
-//   // final String? content;
-//
-//   factory ArticleModel.fromResponse(ArticleResponse response) => ArticleModel(
-//         status: response.status,
-//         totalResults: response.totalResults,
-//         // articles: response.articles,
-//       );
-// }
-
-// class ArticleModel {
-//   final int? userId;
-//   final int? id;
-//   final String? title;
-//   final bool completed;
-//
-//   ArticleModel({this.userId, this.id, this.title, required this.completed});
-//
-//   factory ArticleModel.fromResponse(ArticleResponse response) => ArticleModel(
-//       userId: response.userId,
-//       id: response.id,
-//       title: response.title,
-//       completed: response.completed);
-// }
-
-/* Backups*/
 class ArticleModel {
   final String? status;
   final int? totalResults;
@@ -78,14 +45,9 @@ class ArticleModel {
       articles: result,
     );
   }
-  //
-  // factory ArticleModel.fromResponse(ArticleResponse response) => ArticleModel(
-  //       status: response.status,
-  //       totalResults: response.totalResults,
-  //       articles: response.articles,
-  //     );
 }
 
+/* 모델에서 필요한 데이터 포맷으로 변환 */
 class ArticleCoreModel {
   final String? author;
   final String? title;
@@ -93,8 +55,7 @@ class ArticleCoreModel {
   final String? url;
   final String? urlToImage;
   final String? publishedAt;
-  /* NOTE : Don't use Content Here */
-  // final String? content;
+  // final String? content; // <-- Remove This Member Variable
 
   const ArticleCoreModel({
     this.author,
