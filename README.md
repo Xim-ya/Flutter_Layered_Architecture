@@ -203,3 +203,16 @@ Future<Result<ExampleModel>> getExample(String id) async {
 유지보수 고려. 미래의 변경에 대해 코드 보호. 요구사항이 변경되었을 때 쉽게 대처하기 위해. Implementation 구조를 통해 수정 과정 중 휴먼에러를 방지할 수 있음.
 
 이런 추상화된 구조의 핵심은 주석 없이도 코드만으로 의도를 이해할 수 있어야함. 그리고 이런 구조가 수정을 용이하게 함.
+
+## Repository의 메소드만 호출만 하는 usecase를 만들어줄 필요가 있나?
+
+코드의 일관성으 고려해 usecase를 만들어주어야 함. Implementation 구조를 적용하는 이유와 비슷함.
+
+## Repository 소스와 모델 소스를 분리한 이유?
+
+- 중복을 줄이려고. Repository소스에서  매핑하는 생성자 메소드를 포함해도 상관 없음. 다만 해당 데이터 모델이 다른 곳에서 사용한다고 했을 때 번거롭게 다시 생성자 메소드를 적어야되는 경우가 생김.
+- 최악의 경우 모델의 스펙이 변경되었을 때, 매핑하는 생성자 메소드가 Repository 단계에 있다면 모든 Repository에서 생성자 메소드를 변경해야되는 번거로운 일이 생김.
+
+### Hive를 이용할 때 원칙상 Box를 리턴하면 안됨. DB의 리스트 또는 객체 자체를  DataSource → Repository로 넘겨주는게 맞음.
+
+### Retrofit에서 Baseurl을 적을 때, Dio객체를 완전히 분리했기 때문에 BaseUrl도 따로 적어야함.
